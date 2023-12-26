@@ -27,7 +27,7 @@ class MyHashTable<K, V> {
     // Method to get index based on key
     private int getBucketIndex(K key) {
         int hashCode = key.hashCode();
-        int index = hashCode % size;
+        int index = Math.abs(hashCode) % size;
         return index;
     }
 
@@ -75,12 +75,13 @@ class MyHashTable<K, V> {
 
 public class WordFrequencyCounter {
     public static void main(String[] args) {
-        String sentence = "To be or not to be";
-        String[] words = sentence.split(" ");
+        String paragraph = "Paranoids are not paranoid because they are paranoid but "
+                + "because they keep putting themselves deliberately into paranoid avoidable situations";
+        String[] words = paragraph.split(" ");
 
         MyHashTable<String, Integer> wordFrequencyTable = new MyHashTable<>(10);
 
-        // Count the frequency of each word in the sentence
+        // Count the frequency of each word in the paragraph
         for (String word : words) {
             String cleanedWord = word.toLowerCase().replaceAll("[^a-zA-Z]", "");
             Integer frequency = wordFrequencyTable.get(cleanedWord);
