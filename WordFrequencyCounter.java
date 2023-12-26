@@ -61,6 +61,20 @@ class MyHashTable<K, V> {
         bucket.add(newNode);
     }
 
+    // Method to remove key and its associated value from the hash table
+    public void remove(K key) {
+        int index = getBucketIndex(key);
+        LinkedList<MyMapNode<K, V>> bucket = buckets[index];
+
+        // Find and remove the node with the specified key
+        for (MyMapNode<K, V> node : bucket) {
+            if (node.key.equals(key)) {
+                bucket.remove(node);
+                return;
+            }
+        }
+    }
+
     // Method to get all keys in the hash table
     public LinkedList<K> getKeys() {
         LinkedList<K> keys = new LinkedList<>();
@@ -75,13 +89,13 @@ class MyHashTable<K, V> {
 
 public class WordFrequencyCounter {
     public static void main(String[] args) {
-        String paragraph = "Paranoids are not paranoid because they are paranoid but "
+        String phrase = "Paranoids are not paranoid because they are paranoid but "
                 + "because they keep putting themselves deliberately into paranoid avoidable situations";
-        String[] words = paragraph.split(" ");
 
         MyHashTable<String, Integer> wordFrequencyTable = new MyHashTable<>(10);
 
-        // Count the frequency of each word in the paragraph
+        // Count the frequency of each word in the phrase
+        String[] words = phrase.split(" ");
         for (String word : words) {
             String cleanedWord = word.toLowerCase().replaceAll("[^a-zA-Z]", "");
             Integer frequency = wordFrequencyTable.get(cleanedWord);
@@ -93,8 +107,17 @@ public class WordFrequencyCounter {
             wordFrequencyTable.put(cleanedWord, frequency);
         }
 
-        // Display the word frequencies
-        System.out.println("Word Frequencies:");
+        // Display the original word frequencies
+        System.out.println("Original Word Frequencies:");
+        for (String word : wordFrequencyTable.getKeys()) {
+            System.out.println(word + ": " + wordFrequencyTable.get(word));
+        }
+
+        // Remove the word "avoidable" from the hash table
+        wordFrequencyTable.remove("avoidable");
+
+        // Display the word frequencies after removal
+        System.out.println("\nWord Frequencies after Removal:");
         for (String word : wordFrequencyTable.getKeys()) {
             System.out.println(word + ": " + wordFrequencyTable.get(word));
         }
